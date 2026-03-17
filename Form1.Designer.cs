@@ -28,13 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
-            label2 = new Label();
+            lblYellow = new Label();
+            lblRed = new Label();
             groupBox1 = new GroupBox();
-            label5 = new Label();
-            label4 = new Label();
-            label3 = new Label();
-            button3 = new Button();
+            lbTurn = new Label();
+            lblTitre = new Label();
             button2 = new Button();
             button1 = new Button();
             tableLayoutPanel1 = new TableLayoutPanel();
@@ -84,81 +82,68 @@
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
-            // label1
+            // lblYellow
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(204, 117);
-            label1.Name = "label1";
-            label1.Size = new Size(59, 25);
-            label1.TabIndex = 0;
-            label1.Text = "label1";
+            lblYellow.AutoSize = true;
+            lblYellow.BackColor = SystemColors.ControlDark;
+            lblYellow.Font = new Font("Stencil", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblYellow.ForeColor = Color.Yellow;
+            lblYellow.Location = new Point(160, 157);
+            lblYellow.Name = "lblYellow";
+            lblYellow.Size = new Size(107, 26);
+            lblYellow.TabIndex = 0;
+            lblYellow.Text = "YELLOW :";
             // 
-            // label2
+            // lblRed
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(39, 117);
-            label2.Name = "label2";
-            label2.Size = new Size(59, 25);
-            label2.TabIndex = 1;
-            label2.Text = "label2";
+            lblRed.AutoSize = true;
+            lblRed.Font = new Font("Stencil", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblRed.ForeColor = Color.Crimson;
+            lblRed.Location = new Point(20, 157);
+            lblRed.Name = "lblRed";
+            lblRed.Size = new Size(67, 26);
+            lblRed.TabIndex = 1;
+            lblRed.Text = "RED :";
             // 
             // groupBox1
             // 
             groupBox1.BackColor = SystemColors.ControlLight;
-            groupBox1.Controls.Add(label5);
-            groupBox1.Controls.Add(label4);
-            groupBox1.Controls.Add(label3);
-            groupBox1.Controls.Add(button3);
+            groupBox1.Controls.Add(lbTurn);
+            groupBox1.Controls.Add(lblTitre);
             groupBox1.Controls.Add(button2);
             groupBox1.Controls.Add(button1);
-            groupBox1.Controls.Add(label1);
-            groupBox1.Controls.Add(label2);
+            groupBox1.Controls.Add(lblYellow);
+            groupBox1.Controls.Add(lblRed);
             groupBox1.Location = new Point(737, 34);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(300, 471);
             groupBox1.TabIndex = 2;
             groupBox1.TabStop = false;
-            groupBox1.Text = "groupBox1";
             // 
-            // label5
+            // lbTurn
             // 
-            label5.AutoSize = true;
-            label5.Location = new Point(39, 188);
-            label5.Name = "label5";
-            label5.Size = new Size(59, 25);
-            label5.TabIndex = 7;
-            label5.Text = "label5";
+            lbTurn.AutoSize = true;
+            lbTurn.Font = new Font("Stencil", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbTurn.Location = new Point(20, 240);
+            lbTurn.Name = "lbTurn";
+            lbTurn.Size = new Size(90, 33);
+            lbTurn.TabIndex = 7;
+            lbTurn.Text = "Turn";
             // 
-            // label4
+            // lblTitre
             // 
-            label4.AutoSize = true;
-            label4.Location = new Point(39, 231);
-            label4.Name = "label4";
-            label4.Size = new Size(59, 25);
-            label4.TabIndex = 6;
-            label4.Text = "label4";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(39, 273);
-            label3.Name = "label3";
-            label3.Size = new Size(59, 25);
-            label3.TabIndex = 5;
-            label3.Text = "label3";
-            // 
-            // button3
-            // 
-            button3.Location = new Point(110, 431);
-            button3.Name = "button3";
-            button3.Size = new Size(112, 34);
-            button3.TabIndex = 4;
-            button3.Text = "button3";
-            button3.UseVisualStyleBackColor = true;
+            lblTitre.Font = new Font("Showcard Gothic", 22F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblTitre.ForeColor = Color.Red;
+            lblTitre.Location = new Point(6, 12);
+            lblTitre.Name = "lblTitre";
+            lblTitre.Size = new Size(288, 55);
+            lblTitre.TabIndex = 5;
+            lblTitre.Text = "Puissance 4";
             // 
             // button2
             // 
-            button2.Location = new Point(87, 361);
+            button2.Font = new Font("Stencil", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button2.Location = new Point(87, 387);
             button2.Name = "button2";
             button2.Size = new Size(153, 64);
             button2.TabIndex = 3;
@@ -167,7 +152,8 @@
             // 
             // button1
             // 
-            button1.Location = new Point(87, 311);
+            button1.Font = new Font("Stencil", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button1.Location = new Point(87, 330);
             button1.Name = "button1";
             button1.Size = new Size(153, 34);
             button1.TabIndex = 2;
@@ -594,15 +580,13 @@
 
         #endregion
 
-        private Label label1;
-        private Label label2;
+        private Label lblYellow;
+        private Label lblRed;
         private GroupBox groupBox1;
-        private Button button3;
         private Button button2;
         private Button button1;
-        private Label label3;
-        private Label label5;
-        private Label label4;
+        private Label lblTitre;
+        private Label lbTurn;
         private TableLayoutPanel tableLayoutPanel1;
         private CaseP4 caseP442;
         private CaseP4 caseP441;

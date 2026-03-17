@@ -61,28 +61,30 @@ namespace JeuPuissance4
         }
 
 
-     /*   private void panel_Paint(object sender, PaintEventArgs e)
-        {
-            // On active l'anti-aliasing pour que le rond soit lisse (pas d'escaliers)
-            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+        /*   private void panel_Paint(object sender, PaintEventArgs e)
+           {
+               // On active l'anti-aliasing pour que le rond soit lisse (pas d'escaliers)
+               e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-            // Définir la couleur selon l'état de la case (0, 1 ou 2 dans ton tableau)
-            Brush couleurJeton = Brushes.LightGray; // Par défaut vide
+               // Définir la couleur selon l'état de la case (0, 1 ou 2 dans ton tableau)
+               Brush couleurJeton = Brushes.LightGray; // Par défaut vide
 
-            // Exemple de logique :
-            // if (valeurGrille == 1) couleurJeton = Brushes.Red;
-            // if (valeurGrille == 2) couleurJeton = Brushes.Yellow;
+               // Exemple de logique :
+               // if (valeurGrille == 1) couleurJeton = Brushes.Red;
+               // if (valeurGrille == 2) couleurJeton = Brushes.Yellow;
 
-            // On dessine le cercle avec une petite marge (Padding)
-            int marge = 5;
-            e.Graphics.FillEllipse(couleurJeton, marge, marge,
-                                   panel.Width - (marge * 2),
-                                   panel.Height - (marge * 2));
-        }*/
+               // On dessine le cercle avec une petite marge (Padding)
+               int marge = 5;
+               e.Graphics.FillEllipse(couleurJeton, marge, marge,
+                                      panel.Width - (marge * 2),
+                                      panel.Height - (marge * 2));
+           }*/
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
         {
 
         }
+
+      
     }
 }
