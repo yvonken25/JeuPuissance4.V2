@@ -1,7 +1,46 @@
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
+
 namespace JeuPuissance4
 {
     public partial class Form1 : Form
     {
+        int joueurActuel = 1; // 1 = Rouge, 2 = Jaune
+        int[] colCount = new int[7];
+        int moveCounter = 0;
+        bool gameEnded = false;
+        bool redStarts = false;
+        int scoreRed = 0, scoreYellow = 0;
+
+        List<(int col, int lig)> moves = new List<(int col, int lig)>();
+        List<(int col, int lig)> redo = new List<(int col, int lig)>();
+
+        int[,] grille = new int[7, 6];
+        CaseP4[,] casesVisuelles = new CaseP4[7, 6];
+
+        HowToPlay how;
+
+        private string ToBgr(Color c) => $"{c.B:X2}{c.G:X2}{c.R:X2}";
+
+        [DllImport("DwmApi")]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, int[] attrValue, int attrSize);
+
+        const int DWWMA_CAPTION_COLOR = 35;
+        void CustomWindow(Color captionColor, IntPtr handle)
+        {
+            try
+            {
+                int[] caption = new int[] { int.Parse(ToBgr(captionColor), System.Globalization.NumberStyles.HexNumber) };
+                DwmSetWindowAttribute(handle, DWWMA_CAPTION_COLOR, caption, 4);
+            }
+            catch { }
+        }
+
+
         public Form1()
         {
             InitializeComponent();
@@ -18,73 +57,215 @@ namespace JeuPuissance4
                     c.Click += GererClic;
                 }
             }
+
+            UpdateStatus();
         }
 
 
+        private void ChangeTurn()
+        {
+            joueurActuel = (joueurActuel == 1) ? 2 : 1;
+            UpdateStatus();
+        }
 
 
-        int[,] grille = new int[7, 6];
-        int joueurActuel = 1; // 1 = Rouge, 2 = Jaune
-
-        // Un tableau pour accéder facilement à tes contrôles visuels
-        CaseP4[,] casesVisuelles = new CaseP4[7, 6];
 
 
         private void GererClic(object sender, EventArgs e)
         {
+
+            if (gameEnded) return;
+
+
             CaseP4 caseCliquee = (CaseP4)sender;
             int col = tableLayoutPanel1.GetColumn(caseCliquee);
+            JouerColonne(col);
+        }
 
-            // On cherche la ligne vide (0) en partant du bas (ligne 5)
+        private void JouerColonne(int col)
+        {
+            if (gameEnded) return;
+            if (colCount[col] >= 6) return;
+
             for (int lig = 5; lig >= 0; lig--)
             {
                 if (grille[col, lig] == 0)
                 {
-                    // 1. Mise à jour de la donnée
                     grille[col, lig] = joueurActuel;
-
-                    // 2. Mise à jour du visuel
                     casesVisuelles[col, lig].Etat = joueurActuel;
+                    colCount[col]++;
+                    moves.Add((col, lig));
+                    redo.Clear();
+                    moveCounter++;
 
-                    // 3. Vérifier la victoire (on verra l'algo après)
-                    // VerifierVictoire(col, lig);
-
-                    // 4. Changer de joueur
-                    joueurActuel = (joueurActuel == 1) ? 2 : 1;
-
-                    return; // On a posé le jeton, on arrête la boucle
+                    CheckForWinner(col, lig);
+                    ChangeTurn();
+                    return;
                 }
             }
-
-            // Si on arrive ici, c'est que la colonne est pleine
-            MessageBox.Show("Colonne pleine !");
         }
 
 
-        /*   private void panel_Paint(object sender, PaintEventArgs e)
-           {
-               // On active l'anti-aliasing pour que le rond soit lisse (pas d'escaliers)
-               e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-               // Définir la couleur selon l'état de la case (0, 1 ou 2 dans ton tableau)
-               Brush couleurJeton = Brushes.LightGray; // Par défaut vide
 
-               // Exemple de logique :
-               // if (valeurGrille == 1) couleurJeton = Brushes.Red;
-               // if (valeurGrille == 2) couleurJeton = Brushes.Yellow;
+        private void UpdateStatus()
+        {
+            // Tour
+            if (joueurActuel == 1)
+            {
+                lbTurn.Text = "Tour : ROUGE";
+                lbTurn.ForeColor = Color.Crimson;
+            }
+            else
+            {
+                lbTurn.Text = "Tour : JAUNE";
+                lbTurn.ForeColor = Color.Goldenrod;
+            }
 
-               // On dessine le cercle avec une petite marge (Padding)
-               int marge = 5;
-               e.Graphics.FillEllipse(couleurJeton, marge, marge,
-                                      panel.Width - (marge * 2),
-                                      panel.Height - (marge * 2));
-           }*/
+            // Dernier coup
+            if (moves.Count > 0)
+            {
+                var last = moves.Last();
+                lblLastMove.Text = $"Dernier coup : C{last.col + 1} L{last.lig + 1}";
+            }
+            else
+            {
+                lblLastMove.Text = "Dernier coup : N/A";
+            }
+
+            lbTurn.Text = $"Coup : {moveCounter}";
+            lblRed.Text = $"RED : {scoreRed}";
+            lblYellow.Text = $"YELLOW : {scoreYellow}";
+        }
+
+
+
+
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
         {
 
         }
 
-      
-    }
+        private void btnHow_Click(object sender, EventArgs e)
+        {
+            if (how == null)
+            {
+               HowToPlay h = new HowToPlay();
+                h.Location = this.Location;
+                h.Size = this.Size;
+                h.Show();
+                how = h;
+            }
+           else { 
+              how.Location = this.Location;
+                how.Size = this.Size;
+                how.Show();
+            }
+        }
+
+        private void btnRestart_Click(object sender, EventArgs e)
+        {
+            for (int col = 0; col < 7; col++)
+                for (int lig = 0; lig < 6; lig++)
+                {
+                    grille[col, lig] = 0;
+                    casesVisuelles[col, lig].Etat = 0;
+                }
+
+            for (int i = 0; i < 7; i++) colCount[i] = 0;
+            moveCounter = 0;
+            gameEnded = false;
+            moves.Clear();
+            redo.Clear();
+
+            if (!redStarts)
+            {
+                joueurActuel = 2;
+                redStarts = true;
+            }
+            else
+            {
+                joueurActuel = 1;
+                redStarts = false;
+            }
+
+            UpdateStatus();
+        }
+
+
+        private void CheckForWinner(int lastCol, int lastLig)
+        {
+            int j = joueurActuel;
+
+            bool victoire =
+                CheckDir(j, lastCol, lastLig, 1, 0) ||  // horizontal
+                CheckDir(j, lastCol, lastLig, 0, 1) ||  // vertical
+                CheckDir(j, lastCol, lastLig, 1, 1) ||  // diag droite
+                CheckDir(j, lastCol, lastLig, 1, -1);   // diag gauche
+
+            if (victoire)
+            {
+                gameEnded = true;
+                string nom = (j == 1) ? "Rouge" : "Jaune";
+                MessageBoxIcon icon = (j == 1) ? MessageBoxIcon.Error : MessageBoxIcon.Warning;
+
+                if (j == 1) scoreRed++;
+                else scoreYellow++;
+
+                UpdateStatus();
+
+                DialogResult result = MessageBox.Show(
+                    $"{nom} a gagné la partie !!!\nCommencer une nouvelle partie ?",
+                    $"{nom} gagne",
+                    MessageBoxButtons.YesNo,
+                    icon);
+
+                if (result == DialogResult.Yes)
+                    btnRestart_Click(null, null);
+
+                return;
+            }
+
+            if (moveCounter == 42)
+            {
+                gameEnded = true;
+                DialogResult result = MessageBox.Show(
+                    "Match nul !!!\nCommencer une nouvelle partie ?",
+                    "Nul",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Information);
+
+                if (result == DialogResult.Yes)
+                    btnRestart_Click(null, null);
+            }
+        }
+
+
+        private bool CheckDir(int joueur, int col, int lig, int dc, int dl)
+        {
+            int count = 1;
+            count += CountInDirection(joueur, col, lig, dc, dl);
+            count += CountInDirection(joueur, col, lig, -dc, -dl);
+            return count >= 4;
+        }
+
+
+        private int CountInDirection(int joueur, int col, int lig, int dc, int dl)
+        {
+            int count = 0;
+            int c = col + dc, l = lig + dl;
+            while (c >= 0 && c < 7 && l >= 0 && l < 6 && grille[c, l] == joueur)
+            {
+                count++;
+                c += dc;
+                l += dl;
+            }
+            return count;
+        }
+
+
+
+
+}
 }

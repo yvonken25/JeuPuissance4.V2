@@ -31,10 +31,11 @@
             lblYellow = new Label();
             lblRed = new Label();
             groupBox1 = new GroupBox();
+            lblLastMove = new Label();
             lbTurn = new Label();
             lblTitre = new Label();
-            button2 = new Button();
-            button1 = new Button();
+            btnHow = new Button();
+            btnRestart = new Button();
             tableLayoutPanel1 = new TableLayoutPanel();
             caseP442 = new CaseP4();
             caseP441 = new CaseP4();
@@ -86,47 +87,58 @@
             // 
             lblYellow.AutoSize = true;
             lblYellow.BackColor = SystemColors.ControlDark;
-            lblYellow.Font = new Font("Stencil", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblYellow.Font = new Font("Showcard Gothic", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblYellow.ForeColor = Color.Yellow;
-            lblYellow.Location = new Point(160, 157);
+            lblYellow.Location = new Point(200, 189);
             lblYellow.Name = "lblYellow";
-            lblYellow.Size = new Size(107, 26);
+            lblYellow.Size = new Size(114, 28);
             lblYellow.TabIndex = 0;
             lblYellow.Text = "YELLOW :";
             // 
             // lblRed
             // 
             lblRed.AutoSize = true;
-            lblRed.Font = new Font("Stencil", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblRed.Font = new Font("Showcard Gothic", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblRed.ForeColor = Color.Crimson;
-            lblRed.Location = new Point(20, 157);
+            lblRed.Location = new Point(20, 189);
             lblRed.Name = "lblRed";
-            lblRed.Size = new Size(67, 26);
+            lblRed.Size = new Size(66, 28);
             lblRed.TabIndex = 1;
             lblRed.Text = "RED :";
             // 
             // groupBox1
             // 
-            groupBox1.BackColor = SystemColors.ControlLight;
+            groupBox1.BackColor = SystemColors.ControlDark;
+            groupBox1.Controls.Add(lblLastMove);
             groupBox1.Controls.Add(lbTurn);
             groupBox1.Controls.Add(lblTitre);
-            groupBox1.Controls.Add(button2);
-            groupBox1.Controls.Add(button1);
+            groupBox1.Controls.Add(btnHow);
+            groupBox1.Controls.Add(btnRestart);
             groupBox1.Controls.Add(lblYellow);
             groupBox1.Controls.Add(lblRed);
             groupBox1.Location = new Point(737, 34);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(300, 471);
+            groupBox1.Size = new Size(394, 569);
             groupBox1.TabIndex = 2;
             groupBox1.TabStop = false;
+            // 
+            // lblLastMove
+            // 
+            lblLastMove.AutoSize = true;
+            lblLastMove.Font = new Font("Showcard Gothic", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblLastMove.Location = new Point(20, 334);
+            lblLastMove.Name = "lblLastMove";
+            lblLastMove.Size = new Size(178, 35);
+            lblLastMove.TabIndex = 8;
+            lblLastMove.Text = "Last Move :";
             // 
             // lbTurn
             // 
             lbTurn.AutoSize = true;
-            lbTurn.Font = new Font("Stencil", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbTurn.Location = new Point(20, 240);
+            lbTurn.Font = new Font("Showcard Gothic", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbTurn.Location = new Point(20, 264);
             lbTurn.Name = "lbTurn";
-            lbTurn.Size = new Size(90, 33);
+            lbTurn.Size = new Size(90, 35);
             lbTurn.TabIndex = 7;
             lbTurn.Text = "Turn";
             // 
@@ -140,25 +152,27 @@
             lblTitre.TabIndex = 5;
             lblTitre.Text = "Puissance 4";
             // 
-            // button2
+            // btnHow
             // 
-            button2.Font = new Font("Stencil", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button2.Location = new Point(87, 387);
-            button2.Name = "button2";
-            button2.Size = new Size(153, 64);
-            button2.TabIndex = 3;
-            button2.Text = "Apprendre a jouer";
-            button2.UseVisualStyleBackColor = true;
+            btnHow.Font = new Font("Stencil", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnHow.Location = new Point(87, 471);
+            btnHow.Name = "btnHow";
+            btnHow.Size = new Size(153, 64);
+            btnHow.TabIndex = 3;
+            btnHow.Text = "Apprendre a jouer";
+            btnHow.UseVisualStyleBackColor = true;
+            btnHow.Click += btnHow_Click;
             // 
-            // button1
+            // btnRestart
             // 
-            button1.Font = new Font("Stencil", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.Location = new Point(87, 330);
-            button1.Name = "button1";
-            button1.Size = new Size(153, 34);
-            button1.TabIndex = 2;
-            button1.Text = "Rejouer";
-            button1.UseVisualStyleBackColor = true;
+            btnRestart.Font = new Font("Stencil", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnRestart.Location = new Point(87, 412);
+            btnRestart.Name = "btnRestart";
+            btnRestart.Size = new Size(153, 34);
+            btnRestart.TabIndex = 2;
+            btnRestart.Text = "Rejouer";
+            btnRestart.UseVisualStyleBackColor = true;
+            btnRestart.Click += btnRestart_Click;
             // 
             // tableLayoutPanel1
             // 
@@ -225,7 +239,6 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.Size = new Size(719, 629);
             tableLayoutPanel1.TabIndex = 3;
-            tableLayoutPanel1.Paint += tableLayoutPanel1_Paint;
             // 
             // caseP442
             // 
@@ -567,7 +580,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1049, 653);
+            ClientSize = new Size(1160, 653);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(groupBox1);
             Name = "Form1";
@@ -583,8 +596,8 @@
         private Label lblYellow;
         private Label lblRed;
         private GroupBox groupBox1;
-        private Button button2;
-        private Button button1;
+        private Button btnHow;
+        private Button btnRestart;
         private Label lblTitre;
         private Label lbTurn;
         private TableLayoutPanel tableLayoutPanel1;
@@ -630,5 +643,6 @@
         private CaseP4 caseP41;
         private CaseP4 caseP42;
         private CaseP4 caseP43;
+        private Label lblLastMove;
     }
 }
